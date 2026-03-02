@@ -21,12 +21,12 @@ public class Program
         
         // dummy snake, create tail downwards
         snakes[1].InitialiseTail(5, new Vector2(0, -1));
+        var player = snakes[0];
         Apple apple = new(GridDimensions, snakes);
-
+        
         while (true)
         {
             Console.SetCursorPosition(0, 0);
-            Snake player = snakes[0];
             Console.WriteLine("Score: " + player.Score);
 
             var isEating = CheckAppleCollision(player, apple);
@@ -34,11 +34,8 @@ public class Program
                 Apple.PickRandomAppleLocation(GridDimensions, snakes);
 
             player.ApplyMovementDirection(GetMovementInput(), isEating);
-
             HandleSnakesCollision(snakes, GridDimensions);
-            
             RenderGame(GridDimensions, snakes, apple);
-
             Thread.Sleep(1000 / TargetFps);
         }
     }
