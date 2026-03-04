@@ -29,12 +29,12 @@ public class Program
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Score: " + player.Score);
 
-            var isEating = CheckAppleCollision(player, apple);
+            var isEating = CollisionManager.CheckAppleCollision(player, apple);
             if (isEating)
                 Apple.PickRandomAppleLocation(GridDimensions, Snakes);
 
             player.ApplyMovementDirection(GetMovementInput(), isEating);
-            HandleSnakesCollision(Snakes, GridDimensions);
+            CollisionManager.HandleSnakesCollision(Snakes, GridDimensions);
             RenderGame(GridDimensions, Snakes, apple);
         }
     }
@@ -79,48 +79,6 @@ public class Program
                     Console.Write(' ');
             }
             Console.WriteLine();
-        }
-    }
-    private static bool CheckAppleCollision(Snake snake, Apple apple)
-    {
-        return snake.Position == apple.Position;
-    }
-
-    private static void HandleSnakesCollision(List<Snake> snakes, Vector2 grid)
-    {
-        HashSet<Snake> deadSnakes = [];
-
-        foreach (var snake in snakes)
-        {
-            // hit wall or eat its own tail
-            if (snake.ShouldDie(grid))
-            {
-                deadSnakes.Add(snake);
-                continue;
-            }
-            
-            // snake collide with other snake
-            foreach (var other in snakes)
-            {
-                if (snake == other) continue;
-                
-                // head to head
-                if (other.HeadExistsAtCoordinate(snake.Position))
-                {
-                    deadSnakes.Add(snake);
-                    deadSnakes.Add(other);
-                }
-                // snake bite other's tail
-                else if (other.TailIntersectsWithCoordinate(snake.Position))
-                {
-                    deadSnakes.Add(snake);
-                }
-            }
-        }
-
-        foreach (var victim in deadSnakes)
-        {
-            victim.Respawn();
         }
     }
 }
