@@ -3,46 +3,59 @@ using System.Numerics;
 
 public static class CollisionManager
 {
-    public static bool CheckAppleCollision(Snake snake, Apple apple)
+    public static bool IsEatingApple(Snake snake, Apple apple)
     {
         return snake.Position == apple.Position;
     }
 
-    public static void HandleSnakesCollision(List<Snake> snakes, Vector2 grid)
+    public static void EatApple(Snake snake, Apple apple, Vector2 grid, List<Snake> snakes)
     {
-        HashSet<Snake> deadSnakes = [];
+        if (IsEatingApple(snake, apple))
+        {
+            snake.GrowTail();
+            Apple.PickRandomAppleLocation(grid, snakes);
+        }
+    }
 
+    private static void RespawnDeadSnakes(HashSet<Snake> deadSnakes)
+    {
+        foreach (var victim in deadSnakes)
+        {
+            victim.Respawn();
+        }
+    }
+
+    private static void FindDeadSnakes(HashSet<Snake> deadSnakes, List<Snake> snakes, Vector2 grid)
+    {
         foreach (var snake in snakes)
         {
-            // hit wall or eat its own tail
             if (snake.ShouldDie(grid))
             {
                 deadSnakes.Add(snake);
                 continue;
             }
             
-            // snake collide with other snake
             foreach (var other in snakes)
             {
                 if (snake == other) continue;
                 
-                // head to head
                 if (other.HeadExistsAtCoordinate(snake.Position))
                 {
                     deadSnakes.Add(snake);
                     deadSnakes.Add(other);
                 }
-                // snake bite other's tail
                 else if (other.TailIntersectsWithCoordinate(snake.Position))
                 {
                     deadSnakes.Add(snake);
                 }
             }
         }
+    }
 
-        foreach (var victim in deadSnakes)
-        {
-            victim.Respawn();
-        }
+    public static void HasCollided(List<Snake> snakes, Vector2 grid)
+    {
+        HashSet<Snake> deadSnakes = [];
+        FindDeadSnakes(deadSnakes, snakes, grid);
+        RespawnDeadSnakes(deadSnakes);
     }
 }
