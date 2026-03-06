@@ -11,17 +11,13 @@ public class Snake(int startingX, int startingY)
     public int Y => (int)_snakeHead.Y;
     public Vector2 Position => _snakeHead;
 
-    public void ApplyMovementDirection(Direction direction, bool isEating)
+    public void ApplyMovementDirection(Direction direction)
     {
         if (direction != Direction.Invalid && !IsOppositeDirection(direction))
             _movementDirection = direction;
-        
-        if (isEating)
-            GrowTail();
-        else
-            MaintainTail();
-
+        GrowTail();
         AdvanceSnakeHead();
+        MaintainTail();
     }
 
     private bool IsOppositeDirection(Direction newDirection)
@@ -64,12 +60,11 @@ public class Snake(int startingX, int startingY)
 
     private void MaintainTail()
     {
-        _snakeTail.Enqueue(new Vector2(_snakeHead.X, _snakeHead.Y));
         if (_snakeTail.Count > 0)
             _snakeTail.Dequeue();
     }
 
-    private void GrowTail()
+    public void GrowTail()
     {
         _snakeTail.Enqueue(new Vector2(_snakeHead.X, _snakeHead.Y));
     }

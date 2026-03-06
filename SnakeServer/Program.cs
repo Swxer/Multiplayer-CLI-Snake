@@ -30,12 +30,9 @@ public class Program
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Score: " + player.Score);
 
-            var isEating = CollisionManager.CheckAppleCollision(player, apple);
-            if (isEating)
-                Apple.PickRandomAppleLocation(GridDimensions, Snakes);
-
-            player.ApplyMovementDirection(GetMovementInput(), isEating);
-            CollisionManager.HandleSnakesCollision(Snakes, GridDimensions);
+            CollisionManager.EatApple(player, apple, GridDimensions, Snakes);
+            player.ApplyMovementDirection(GetMovementInput());
+            CollisionManager.HasCollided(Snakes, GridDimensions);
             RenderGame(GridDimensions, Snakes, apple);
         }
     }
