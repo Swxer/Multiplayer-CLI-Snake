@@ -52,7 +52,7 @@ public static class CollisionManager
         }
     }
 
-    public static void HasCollided(List<Snake> snakes, Vector2 grid)
+    public static void HandleCollision(List<Snake> snakes, Vector2 grid)
     {
         HashSet<Snake> deadSnakes = [];
         FindDeadSnakes(deadSnakes, snakes, grid);

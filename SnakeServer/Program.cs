@@ -1,4 +1,7 @@
-﻿namespace SnakeServer;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace SnakeServer;
 using System.Numerics;
 
 public class Program
@@ -21,7 +24,7 @@ public class Program
         Snakes.Add(dummy);
         
         Apple apple = new(GridDimensions, Snakes);
-
+        
         var intervalMs = 1000 / TargetFps;
         using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(intervalMs));
         
@@ -29,12 +32,13 @@ public class Program
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("Score: " + player.Score);
-
+        
             CollisionManager.EatApple(player, apple, GridDimensions, Snakes);
             player.ApplyMovementDirection(GetMovementInput());
-            CollisionManager.HasCollided(Snakes, GridDimensions);
+            CollisionManager.HandleCollision(Snakes, GridDimensions);
             RenderGame(GridDimensions, Snakes, apple);
         }
+        Run();
     }
 
     private static Direction GetMovementInput()
@@ -78,5 +82,17 @@ public class Program
             }
             Console.WriteLine();
         }
+    }
+
+    public static void Run()
+    {
+        var builder = WebApplication.CreateBuilder();
+        builder.Services.AddSignalR();
+        
+        var app = builder.Build();
+        
+        app.MapHub<GameHub>("/gameHub");
+        Console.WriteLine("Fight for snake oil");
+        app.Run();
     }
 }
