@@ -1,4 +1,6 @@
-﻿namespace SnakeServer;
+﻿using SnakeShared;
+
+namespace SnakeServer;
 using System.Numerics;
 public class Snake(int startingX, int startingY)
 {

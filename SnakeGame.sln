@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeClient", "SnakeClient\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeServer", "SnakeServer\SnakeServer.csproj", "{FFD2EB81-0AED-4F5C-96A2-22D052D16E56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeShared", "SnakeShared\SnakeShared.csproj", "{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FFD2EB81-0AED-4F5C-96A2-22D052D16E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFD2EB81-0AED-4F5C-96A2-22D052D16E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFD2EB81-0AED-4F5C-96A2-22D052D16E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

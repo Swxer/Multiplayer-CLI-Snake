@@ -1,4 +1,4 @@
-﻿namespace SnakeServer;
+﻿namespace SnakeShared;
 
 public enum Direction
 {
