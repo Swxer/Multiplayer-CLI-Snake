@@ -11,36 +11,43 @@ public class Program
         var hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5000/gameHub")
             .Build();
-        
+    
         hubConnection.On<GameState>("GameState", (state) => {
             RenderGame(state); 
         });
+    
         await hubConnection.StartAsync();
         
         _ = Task.Run(async () => {
             while (true)
             {
-                var direction = GetDirectionFromKey();
-                await hubConnection.InvokeAsync("Move", direction);
-                await Task.Delay(50); 
+                await Task.Delay(100); 
             }
         });
-        Console.ReadLine();
-    }
-
-    private static Direction GetDirectionFromKey()
-    {
-        if (!Console.KeyAvailable) return Direction.Invalid;
-        var key = Console.ReadKey(true).Key;
-
-        return key switch
+        
+        while (true)
         {
-            ConsoleKey.LeftArrow or ConsoleKey.A => Direction.Left,
-            ConsoleKey.RightArrow or ConsoleKey.D => Direction.Right,
-            ConsoleKey.UpArrow or ConsoleKey.W => Direction.Up,
-            ConsoleKey.DownArrow or ConsoleKey.S => Direction.Down,
-            _ => Direction.Invalid
-        };
+            var keyInfo = Console.ReadKey(intercept: true);
+        
+            var direction = keyInfo.Key switch
+            {
+                ConsoleKey.LeftArrow or ConsoleKey.A => Direction.Left,
+                ConsoleKey.RightArrow or ConsoleKey.D => Direction.Right,
+                ConsoleKey.UpArrow or ConsoleKey.W => Direction.Up,
+                ConsoleKey.DownArrow or ConsoleKey.S => Direction.Down,
+                _ => Direction.Invalid
+            };
+        
+            if (direction != Direction.Invalid)
+            {
+                await hubConnection.InvokeAsync("Move", direction);
+            }
+        }
+    }
+    
+    private static bool IsSnakeAtPosition(Position position, List<SnakeState> snakes)
+    {
+        return snakes.Any(snake => snake.Body.Any(segment => segment == position));
     }
 
     private static void RenderGame(GameState state)
@@ -53,18 +60,11 @@ public class Program
         {
             for (var x = 0; x < Width; x++)
             {
-                var currentPos = new Vector2(x, y);
+                var currentPos = new Position(x, y);
 
-                foreach (var snake in snakes)
-                {
-                    foreach (var segment in snake.Body)
-                    {
-                        if (segment == currentPos)
-                            Console.Write("■");
-                    }
-                }
-                
-                if (currentPos == state.ApplePosition)
+                if (IsSnakeAtPosition(currentPos, snakes))
+                    Console.Write("■");
+                else if (currentPos == state.ApplePosition)
                     Console.Write("A");
                 else if (x == 0 || y == 0 || x == Width - 1 || y == Height - 1)
                     Console.Write('#');

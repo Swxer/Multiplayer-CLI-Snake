@@ -4,5 +4,5 @@ namespace SnakeShared;
 
 public record GameState(
     List<SnakeState> Snakes,
-    Vector2 ApplePosition
+    Position ApplePosition
 );

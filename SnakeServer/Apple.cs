@@ -19,14 +19,13 @@ public class Apple
 
     public static void PickRandomAppleLocation(Vector2 gridDimension, List<Snake> snakes)
     {
-        var rand = new Random();
         bool isOccupied;
         Vector2 newPos;
 
         do
         {
-            var x = rand.Next(1, (int)gridDimension.X - 1);
-            var y = rand.Next(1, (int)gridDimension.Y - 1);
+            var x = Rand.Next(1, (int)gridDimension.X - 1);
+            var y = Rand.Next(1, (int)gridDimension.Y - 1);
             newPos = new Vector2(x, y);
             
             isOccupied = snakes.Any(s => 

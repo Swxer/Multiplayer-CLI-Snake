@@ -12,6 +12,7 @@ public class Snake
     public int X => (int)_snakeHead.X;
     public int Y => (int)_snakeHead.Y;
     public Vector2 Position => _snakeHead;
+    public Direction Direction => _movementDirection;
 
     public Snake(Vector2 gridDimension, List<Snake> snakes)
     {

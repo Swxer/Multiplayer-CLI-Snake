@@ -15,8 +15,8 @@ public class GameHub : Hub
     
     public override async Task OnConnectedAsync()
     {
+        _gameEngine.AddPlayer(Context.ConnectionId);
         await Clients.All.SendAsync("Snake Player", $"Player {Context.ConnectionId} connected");
-  
     }
     
     public override Task OnDisconnectedAsync(Exception? exception)
