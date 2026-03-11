@@ -49,6 +49,9 @@ public class GameEngine
     {
         var snake = new Snake(GridDimensions, _snakes.Values.ToList());
         _snakes.TryAdd(connectionId, snake);
+        
+        if (_apple != null)
+            Apple.PickRandomAppleLocation(GridDimensions, _snakes.Values.ToList());
     }
 
     public void RemovePlayer(string connectionId)
@@ -59,7 +62,9 @@ public class GameEngine
 
     public void QueueInput(string connectionId, Direction direction)
     {
-        _pendingInputs[connectionId] = direction;
+        Console.WriteLine($"Received input from {connectionId}: {direction}");
+        if (direction != Direction.Invalid)
+            _pendingInputs[connectionId] = direction;
     }
 
     private async Task Tick()
@@ -67,9 +72,14 @@ public class GameEngine
         foreach (var (connectionId, snake) in _snakes)
         {
             if (_pendingInputs.TryGetValue(connectionId, out var direction))
+            {
                 snake.ApplyMovementDirection(direction);
+                _pendingInputs.TryRemove(connectionId, out _);
+            }
             else
+            {
                 snake.ApplyMovementDirection(Direction.Invalid);
+            }
         }
 
         if (_apple != null)
@@ -93,17 +103,18 @@ public class GameEngine
             snakeStates.Add(new SnakeState(
                 connectionId,
                 GetSnakeBody(snake),
-                Direction.Down,
+                snake.Direction,
                 snake.Score
             ));
         }
 
-        var applePosition = _apple?.Position ?? Vector2.Zero;
+        Position applePosition = _apple?.Position ?? Vector2.Zero;
+        Console.WriteLine($"Apple: {applePosition}, Snakes: {snakeStates.Count}");
         var gameState = new GameState(snakeStates, applePosition);
         await _hubContext.Clients.All.SendAsync("GameState", gameState);
     }
-    private static List<Vector2> GetSnakeBody(Snake snake)
+    private static List<Position> GetSnakeBody(Snake snake)
     {
-        return snake.GetBody();
+        return snake.GetBody().Select(p => new Position((int)p.X, (int)p.Y)).ToList();
     }
 }
