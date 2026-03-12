@@ -60,6 +60,7 @@ public class Program
         {
             for (var x = 0; x < Width; x++)
             {
+                // Console.WriteLine($"Score: {snakes.FirstOrDefault()?.Score ?? 0}");
                 var currentPos = new Position(x, y);
 
                 if (IsSnakeAtPosition(currentPos, snakes))

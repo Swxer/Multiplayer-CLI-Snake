@@ -13,6 +13,7 @@ public static class CollisionManager
         foreach (var snake in snakes)
             if (IsEatingApple(snake, apple))
             {
+                Console.WriteLine($"Snake eating apple! Position: {snake.Position}, Apple: {apple.Position}");
                 snake.GrowTail();
                 Apple.PickRandomAppleLocation(grid, snakes);
             }
