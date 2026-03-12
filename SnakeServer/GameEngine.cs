@@ -69,6 +69,7 @@ public class GameEngine
 
     private async Task Tick()
     {
+        Console.WriteLine($"Tick - Snake in dict: {_snakes.Values.FirstOrDefault()?.GetBody().Count ?? 0}");
         foreach (var (connectionId, snake) in _snakes)
         {
             if (_pendingInputs.TryGetValue(connectionId, out var direction))
@@ -84,8 +85,8 @@ public class GameEngine
 
         if (_apple != null)
         {
-            CollisionManager.EatApple(_snakes.Values.ToList(), _apple, GridDimensions);
             CollisionManager.HandleCollision(_snakes.Values.ToList(), GridDimensions);
+            CollisionManager.EatApple(_snakes.Values.ToList(), _apple, GridDimensions);
         }
 
         await BroadcastState();
@@ -100,6 +101,7 @@ public class GameEngine
     
         foreach (var (connectionId, snake) in _snakes)
         {
+            Console.WriteLine($"Snake {connectionId}: Score={snake.Score}, Body count={snake.GetBody().Count}");
             snakeStates.Add(new SnakeState(
                 connectionId,
                 GetSnakeBody(snake),
