@@ -49,9 +49,6 @@ public class GameEngine
     {
         var snake = new Snake(GridDimensions, _snakes.Values.ToList());
         _snakes.TryAdd(connectionId, snake);
-        
-        if (_apple != null)
-            Apple.PickRandomAppleLocation(GridDimensions, _snakes.Values.ToList());
     }
 
     public void RemovePlayer(string connectionId)
