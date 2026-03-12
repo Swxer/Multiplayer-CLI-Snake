@@ -59,14 +59,12 @@ public class GameEngine
 
     public void QueueInput(string connectionId, Direction direction)
     {
-        Console.WriteLine($"Received input from {connectionId}: {direction}");
         if (direction != Direction.Invalid)
             _pendingInputs[connectionId] = direction;
     }
 
     private async Task Tick()
     {
-        Console.WriteLine($"Tick - Snake in dict: {_snakes.Values.FirstOrDefault()?.GetBody().Count ?? 0}");
         foreach (var (connectionId, snake) in _snakes)
         {
             if (_pendingInputs.TryGetValue(connectionId, out var direction))
@@ -98,7 +96,6 @@ public class GameEngine
     
         foreach (var (connectionId, snake) in _snakes)
         {
-            Console.WriteLine($"Snake {connectionId}: Score={snake.Score}, Body count={snake.GetBody().Count}");
             snakeStates.Add(new SnakeState(
                 connectionId,
                 GetSnakeBody(snake),
@@ -108,7 +105,6 @@ public class GameEngine
         }
 
         Position applePosition = _apple?.Position ?? Vector2.Zero;
-        Console.WriteLine($"Apple: {applePosition}, Snakes: {snakeStates.Count}");
         var gameState = new GameState(snakeStates, applePosition);
         await _hubContext.Clients.All.SendAsync("GameState", gameState);
     }

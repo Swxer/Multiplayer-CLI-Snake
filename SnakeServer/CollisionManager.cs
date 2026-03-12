@@ -19,11 +19,11 @@ public static class CollisionManager
             }
     }
 
-    private static void RespawnDeadSnakes(HashSet<Snake> deadSnakes)
+    private static void RespawnDeadSnakes(HashSet<Snake> deadSnakes, Vector2 grid, List<Snake> snakes)
     {
         foreach (var victim in deadSnakes)
         {
-            victim.Respawn();
+            victim.Respawn(grid, snakes);
         }
     }
 
@@ -58,6 +58,6 @@ public static class CollisionManager
     {
         HashSet<Snake> deadSnakes = [];
         FindDeadSnakes(deadSnakes, snakes, grid);
-        RespawnDeadSnakes(deadSnakes);
+        RespawnDeadSnakes(deadSnakes, grid, snakes);
     }
 }

@@ -61,10 +61,11 @@ public class Snake
         return _snakeTail.Contains(vector2);
     }
     
-    public void Respawn()
+    public void Respawn(Vector2 gridDimension, List<Snake> snakes)
     {
         _snakeTail.Clear();
-        _snakeHead = new Vector2(10, 2);
+        var spawnPos = PickRandomSpawnLocation(gridDimension, snakes);
+        _snakeHead = new Vector2(spawnPos.X, spawnPos.Y);
         _movementDirection = Direction.Down;
     }
 
