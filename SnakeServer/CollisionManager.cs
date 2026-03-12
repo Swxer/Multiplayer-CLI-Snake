@@ -33,6 +33,7 @@ public static class CollisionManager
         {
             if (snake.ShouldDie(grid))
             {
+                Console.WriteLine($"Snake dead: wall/self collision at {snake.Position}");
                 deadSnakes.Add(snake);
                 continue;
             }
@@ -41,7 +42,8 @@ public static class CollisionManager
             {
                 if (snake == other) continue;
                 
-                if (other.HeadExistsAtCoordinate(snake.Position))
+                if (other.HeadExistsAtCoordinate(snake.Position) ||
+                    other.HeadExistsAtCoordinate(snake.PreviousPosition))
                 {
                     deadSnakes.Add(snake);
                     deadSnakes.Add(other);

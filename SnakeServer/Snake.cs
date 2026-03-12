@@ -7,12 +7,14 @@ public class Snake
     private Vector2 _snakeHead;
     private readonly Queue<Vector2> _snakeTail = new();
     private Direction _movementDirection;
+    private Vector2 _previousPosition;
 
     public int Score => _snakeTail.Count;
     public int X => (int)_snakeHead.X;
     public int Y => (int)_snakeHead.Y;
     public Vector2 Position => _snakeHead;
     public Direction Direction => _movementDirection;
+    public Vector2 PreviousPosition => _previousPosition;
 
     public Snake(Vector2 gridDimension, List<Snake> snakes)
     {
@@ -23,6 +25,7 @@ public class Snake
 
     public void ApplyMovementDirection(Direction direction)
     {
+        _previousPosition = _snakeHead;
         if (direction != Direction.Invalid && !IsOppositeDirection(direction))
             _movementDirection = direction;
         GrowTail();
