@@ -14,6 +14,7 @@ public class GameEngine
 
     private readonly ConcurrentDictionary<string, Snake> _snakes = new();
     private readonly ConcurrentDictionary<string, Direction> _pendingInputs = new();
+    private readonly ConcurrentDictionary<string, string> _playerNames = new();
     private Apple? _apple;
     private PeriodicTimer? _timer;
     private IHubContext<GameHub>? _hubContext;
@@ -53,14 +54,21 @@ public class GameEngine
 
     public void RemovePlayer(string connectionId)
     {
+        Console.WriteLine($"Removing player: {connectionId}");
         _snakes.TryRemove(connectionId, out _);
         _pendingInputs.TryRemove(connectionId, out _);
+        _playerNames.TryRemove(connectionId, out _);
     }
 
     public void QueueInput(string connectionId, Direction direction)
     {
         if (direction != Direction.Invalid)
             _pendingInputs[connectionId] = direction;
+    }
+    
+    public void SetPlayerName(string connectionId, string name)
+    {
+        _playerNames[connectionId] = name;
     }
 
     private async Task Tick()
@@ -98,6 +106,7 @@ public class GameEngine
         {
             snakeStates.Add(new SnakeState(
                 connectionId,
+                _playerNames.GetValueOrDefault(connectionId, "Player"),
                 GetSnakeBody(snake),
                 snake.Direction,
                 snake.Score

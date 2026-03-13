@@ -19,6 +19,12 @@ public class GameHub : Hub
         await Clients.All.SendAsync("Snake Player", $"Player {Context.ConnectionId} connected");
     }
     
+    public Task SetName(string name)
+    {
+        _gameEngine.SetPlayerName(Context.ConnectionId, name);
+        return Task.CompletedTask;
+    }
+    
     public override Task OnDisconnectedAsync(Exception? exception)
     {
         _gameEngine.RemovePlayer(Context.ConnectionId);
