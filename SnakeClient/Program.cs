@@ -8,6 +8,9 @@ public class Program
     const int Height = 20;
     public static async Task Main()
     {
+        Console.Write("Enter your name: ");
+        var playerName = Console.ReadLine() ?? "Player";
+        
         var hubConnection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5000/gameHub")
             .Build();
@@ -17,6 +20,7 @@ public class Program
         });
     
         await hubConnection.StartAsync();
+        await hubConnection.InvokeAsync("SetName", playerName);
         
         _ = Task.Run(async () => {
             while (true)
@@ -72,6 +76,27 @@ public class Program
                     Console.Write(' ');
             }
             Console.WriteLine();
+        }
+        
+        RenderScoreboard(state.Snakes);
+    }
+    
+    private static void RenderScoreboard(List<SnakeState> snakes)
+    {
+        const int scoreboardStart = Height + 1;
+        Console.SetCursorPosition(0, scoreboardStart);
+        
+        for (var i = 0; i < snakes.Count + 2; i++)
+        {
+            Console.WriteLine(new string(' ', 60));
+        }
+        
+        Console.SetCursorPosition(0, scoreboardStart);
+    
+        Console.WriteLine("=== Scoreboard ===");
+        foreach (var snake in snakes)
+        {
+            Console.WriteLine($"{snake.Name}: {snake.Score}");
         }
     }
 }
