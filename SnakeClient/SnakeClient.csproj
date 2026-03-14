@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.3" />
+        <PackageReference Include="Spectre.Console" Version="0.54.1-alpha.0.76" />
         <ProjectReference Include="..\SnakeShared\SnakeShared.csproj" />
     </ItemGroup>
 
