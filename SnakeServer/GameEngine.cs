@@ -9,7 +9,7 @@ public class GameEngine
 {
     private const int TargetFps = 10;
     private const int Width = 50;
-    private const int Height = 20;
+    private const int Height = 25;
     private static readonly Vector2 GridDimensions = new(Width, Height);
 
     private readonly ConcurrentDictionary<string, Snake> _snakes = new();
@@ -54,7 +54,6 @@ public class GameEngine
 
     public void RemovePlayer(string connectionId)
     {
-        Console.WriteLine($"Removing player: {connectionId}");
         _snakes.TryRemove(connectionId, out _);
         _pendingInputs.TryRemove(connectionId, out _);
         _playerNames.TryRemove(connectionId, out _);
