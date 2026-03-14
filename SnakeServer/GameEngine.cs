@@ -9,7 +9,7 @@ public class GameEngine
 {
     private const int TargetFps = 10;
     private const int Width = 50;
-    private const int Height = 25;
+    private const int Height = 20;
     private static readonly Vector2 GridDimensions = new(Width, Height);
 
     private readonly ConcurrentDictionary<string, Snake> _snakes = new();
