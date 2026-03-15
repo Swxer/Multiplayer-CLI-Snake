@@ -10,7 +10,7 @@ public class Program
 
     public static async Task Main()
     {
-        AnsiConsole.Write(new FigletText("SNAKE").Color(Color.Magenta));
+        AnsiConsole.Write(new FigletText("SNAKE").Color(Color.Purple_1));
         AnsiConsole.WriteLine();
 
         string playerName;
@@ -37,7 +37,7 @@ public class Program
             args.Cancel = true;
             Console.ResetColor();
             Console.Clear();
-            Console.WriteLine("\x1b[93mThanks for playing!\x1b[0m");
+            Console.WriteLine("\x1b[96mThanks for playing!\x1b[0m");
             Environment.Exit(0);
         };
         
@@ -109,7 +109,7 @@ public class Program
     {
         if (y == 0)
         {
-            frame.Append("[purple]╔[/]");
+            frame.Append("[purple_1]╔[/]");
     
             if (hasMySnake)
             {
@@ -117,24 +117,24 @@ public class Program
                 int leftSide = (innerWidth - myName.Length) / 2;
                 int rightSide = innerWidth - leftSide - myName.Length;
         
-                frame.Append($"[purple]{new string('═', leftSide)}[/]");
+                frame.Append($"[purple_1]{new string('═', leftSide)}[/]");
                 frame.Append($"[cyan]{myName}[/]");
-                frame.Append($"[purple]{new string('═', rightSide)}[/]");
+                frame.Append($"[purple_1]{new string('═', rightSide)}[/]");
             }
             else
             {
-                frame.Append($"[purple]{new string('═', Width - 2)}[/]");
+                frame.Append($"[purple_1]{new string('═', Width - 2)}[/]");
             }
-            frame.AppendLine("[purple]╗[/]");
+            frame.AppendLine("[purple_1]╗[/]");
         }
         else if (y == Height - 1)
         {
-            frame.Append("[purple]╚[/]");
-            frame.AppendLine($"[purple]{new string('═', Width)}╝[/]");
+            frame.Append("[purple_1]╚[/]");
+            frame.AppendLine($"[purple_1]{new string('═', Width)}╝[/]");
         }
         else
         {
-            frame.Append("[purple]║[/]");
+            frame.Append("[purple_1]║[/]");
             
             for (int x = 0; x < Width; x++)
             {
@@ -160,12 +160,12 @@ public class Program
                 else if (isOtherSnake)
                     frame.Append("[blue]■[/]");
                 else if (currentPos == state.ApplePosition)
-                    frame.Append("[pink1]●[/]");
+                    frame.Append("[DeepPink2]●[/]");
                 else
                     frame.Append(' ');
             }
             
-            frame.AppendLine("[purple]║[/]");
+            frame.AppendLine("[purple_1]║[/]");
         }
     }
 
