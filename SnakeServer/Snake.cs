@@ -95,15 +95,6 @@ public class Snake
                Y <= 0 ||
                Y >= gridDimension.Y - 1;
     }
-    
-    public void InitialiseTail(int length, Vector2 direction)
-    {
-        _snakeTail.Clear();
-        for (var i = 1; i <= length; i++)
-        {
-            _snakeTail.Enqueue(_snakeHead - (direction * i));
-        }
-    }
 
     public List<Vector2> GetBody()
     {

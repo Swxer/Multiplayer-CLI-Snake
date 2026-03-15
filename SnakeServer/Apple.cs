@@ -12,11 +12,6 @@ public class Apple
     }
     public Vector2 Position => _apple;
 
-    public static bool AppleExistsAtCoordinate(Vector2 coord)
-    {
-        return _apple == coord;
-    }
-
     public static void PickRandomAppleLocation(Vector2 gridDimension, List<Snake> snakes)
     {
         bool isOccupied;

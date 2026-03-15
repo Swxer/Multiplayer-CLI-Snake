@@ -88,93 +88,93 @@ public class Program
     }
 
     private static Panel CreateGamePanel(GameState state, string clientConnectionId)
-{
-    var snakes = state.Snakes;
-
-    string myName = "";
-    bool hasMySnake = false;
-    foreach (var snake in snakes)
     {
-        if (snake.ConnectionId == clientConnectionId)
-        {
-            myName = snake.Name;
-            hasMySnake = true;
-            break;
-        }
-    }
+        var snakes = state.Snakes;
 
-    var frame = new System.Text.StringBuilder();
-    
-    for (int y = 0; y < Height; y++)
-    {
-        if (y == 0)
+        string myName = "";
+        bool hasMySnake = false;
+        foreach (var snake in snakes)
         {
-            frame.Append("[purple_1]╔[/]");
-    
-            if (hasMySnake)
+            if (snake.ConnectionId == clientConnectionId)
             {
-                int innerWidth = Width;
-                int leftSide = (innerWidth - myName.Length) / 2;
-                int rightSide = innerWidth - leftSide - myName.Length;
+                myName = snake.Name;
+                hasMySnake = true;
+                break;
+            }
+        }
+
+        var frame = new System.Text.StringBuilder();
         
-                frame.Append($"[purple_1]{new string('═', leftSide)}[/]");
-                frame.Append($"[cyan]{myName}[/]");
-                frame.Append($"[purple_1]{new string('═', rightSide)}[/]");
+        for (int y = 0; y < Height; y++)
+        {
+            if (y == 0)
+            {
+                frame.Append("[purple_1]╔[/]");
+        
+                if (hasMySnake)
+                {
+                    int innerWidth = Width;
+                    int leftSide = (innerWidth - myName.Length) / 2;
+                    int rightSide = innerWidth - leftSide - myName.Length;
+            
+                    frame.Append($"[purple_1]{new string('═', leftSide)}[/]");
+                    frame.Append($"[cyan]{myName}[/]");
+                    frame.Append($"[purple_1]{new string('═', rightSide)}[/]");
+                }
+                else
+                {
+                    frame.Append($"[purple_1]{new string('═', Width - 2)}[/]");
+                }
+                frame.AppendLine("[purple_1]╗[/]");
+            }
+            else if (y == Height - 1)
+            {
+                frame.Append("[purple_1]╚[/]");
+                frame.AppendLine($"[purple_1]{new string('═', Width)}╝[/]");
             }
             else
             {
-                frame.Append($"[purple_1]{new string('═', Width - 2)}[/]");
-            }
-            frame.AppendLine("[purple_1]╗[/]");
-        }
-        else if (y == Height - 1)
-        {
-            frame.Append("[purple_1]╚[/]");
-            frame.AppendLine($"[purple_1]{new string('═', Width)}╝[/]");
-        }
-        else
-        {
-            frame.Append("[purple_1]║[/]");
-            
-            for (int x = 0; x < Width; x++)
-            {
-                var currentPos = new Position(x, y);
+                frame.Append("[purple_1]║[/]");
                 
-                bool isMySnake = false;
-                bool isOtherSnake = false;
-                
-                foreach (var snake in snakes)
+                for (int x = 0; x < Width; x++)
                 {
-                    if (snake.Body.Any(seg => seg == currentPos))
+                    var currentPos = new Position(x, y);
+                    
+                    bool isMySnake = false;
+                    bool isOtherSnake = false;
+                    
+                    foreach (var snake in snakes)
                     {
-                        if (snake.ConnectionId == clientConnectionId)
-                            isMySnake = true;
-                        else
-                            isOtherSnake = true;
-                        break;
+                        if (snake.Body.Any(seg => seg == currentPos))
+                        {
+                            if (snake.ConnectionId == clientConnectionId)
+                                isMySnake = true;
+                            else
+                                isOtherSnake = true;
+                            break;
+                        }
                     }
+
+                    if (isMySnake)
+                        frame.Append("[cyan]■[/]");
+                    else if (isOtherSnake)
+                        frame.Append("[blue]■[/]");
+                    else if (currentPos == state.ApplePosition)
+                        frame.Append("[DeepPink2]●[/]");
+                    else
+                        frame.Append(' ');
                 }
-
-                if (isMySnake)
-                    frame.Append("[cyan]■[/]");
-                else if (isOtherSnake)
-                    frame.Append("[blue]■[/]");
-                else if (currentPos == state.ApplePosition)
-                    frame.Append("[DeepPink2]●[/]");
-                else
-                    frame.Append(' ');
+                
+                frame.AppendLine("[purple_1]║[/]");
             }
-            
-            frame.AppendLine("[purple_1]║[/]");
         }
-    }
 
-    return new Panel(frame.ToString())
-    {
-        Border = BoxBorder.None,
-        Padding = new Padding(0)
-    };
-}
+        return new Panel(frame.ToString())
+        {
+            Border = BoxBorder.None,
+            Padding = new Padding(0)
+        };
+    }
 
     private static Panel CreateScoreboardPanel(List<SnakeState> snakes, string clientConnectionId)
     {

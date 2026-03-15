@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace SnakeServer;
-using System.Numerics;
 
 public class Program
 {
@@ -27,8 +26,6 @@ public class Program
         engine.SetHubContext(app.Services.GetRequiredService<IHubContext<GameHub>>());
     
         app.MapHub<GameHub>("/gameHub");
-    
-        Console.WriteLine("Fight for snake oil");
     
         _ = engine.StartAsync();
         app.Run();

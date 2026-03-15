@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace SnakeShared;
+﻿namespace SnakeShared;
 
 public record SnakeState(
     string ConnectionId,
