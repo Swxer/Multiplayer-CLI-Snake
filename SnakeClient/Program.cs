@@ -37,6 +37,7 @@ public class Program
             args.Cancel = true;
             Console.ResetColor();
             Console.Clear();
+            Console.Clear();
             Console.WriteLine("\x1b[96mThanks for playing!\x1b[0m");
             Environment.Exit(0);
         };
@@ -65,7 +66,7 @@ public class Program
         
         var layout = new Layout("Root")
             .SplitRows(
-                new Layout("Game"),
+                new Layout("Game") {MinimumSize = Height + 1},
                 new Layout("Scoreboard")
             );
         
@@ -158,7 +159,7 @@ public class Program
                     if (isMySnake)
                         frame.Append("[cyan]■[/]");
                     else if (isOtherSnake)
-                        frame.Append("[blue]■[/]");
+                        frame.Append("[DodgerBlue3]■[/]");
                     else if (currentPos == state.ApplePosition)
                         frame.Append("[DeepPink2]●[/]");
                     else
@@ -187,7 +188,7 @@ public class Program
             if (snake.ConnectionId == clientConnectionId)
                 scoreboard.AppendLine($"[cyan]{snake.Name}: {snake.Score}[/]");
             else
-                scoreboard.AppendLine($"[blue]{snake.Name}: {snake.Score}[/]");
+                scoreboard.AppendLine($"[DodgerBlue3]{snake.Name}: {snake.Score}[/]");
         }
 
         return new Panel(scoreboard.ToString())
