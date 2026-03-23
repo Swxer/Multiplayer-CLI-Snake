@@ -19,4 +19,17 @@ public class OrchestratorService
         _docker =  new DockerClientConfiguration().CreateClient();
     }
 
+    private int GetNextAvailablePort()
+    {
+        var usedPorts = _servers.Select((s => s.Port)).ToHashSet();
+
+        for (var port = MinServerPort; port <= MaxServerPort; port++)
+        {
+            if (!usedPorts.Contains(port))
+                return port;
+        }
+        
+        throw new Exception("No available ports available in range 8080 - 8005");
+    }
+
 }
