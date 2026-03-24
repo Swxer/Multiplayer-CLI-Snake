@@ -32,4 +32,38 @@ public class OrchestratorService
         throw new Exception("No available ports available in range 8080 - 8005");
     }
 
+    private async Task<ServerInstance> StartServerAsync()
+    {
+        var port = GetNextAvailablePort();
+
+        var createResponse = await _docker.Containers.CreateContainerAsync(
+            new CreateContainerParameters
+            {
+                Image = "snake-server:latest",
+                Name = $"snake-server{port}",
+                HostConfig = new HostConfig
+                {
+                    PortBindings = new Dictionary<string, IList<PortBinding>>
+                    {
+                        { "8080/tcp", new List<PortBinding> { new PortBinding { HostPort = port.ToString() } } }
+                    }
+                },
+                Env = ["DOTNET_RUNNING_IN_CONTAINER=true"]
+            }
+        );
+
+        await _docker.Containers.StartContainerAsync(createResponse.ID, new ContainerStartParameters());
+
+        var server = new ServerInstance
+        {
+            Port = port,
+            ContainerId = createResponse.ID,
+            PlayerCount = 0,
+            EmptySince = null
+        };
+        _servers.Add(server);
+        Console.WriteLine($"Started SnakeServer container on port {port}");
+        return server;
+    }
+
 }
