@@ -61,6 +61,32 @@ public class OrchestratorService
         }
     }
 
+    public async Task<int> GetPlayerCountAsync(int port)
+    {
+        try
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync($"http://localhost:{port}/playercount");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadFromJsonAsync<PlayerCountResponse>();
+                return json?.Players ?? 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Warning] Failed to ping port {port}: {ex.Message}");
+        }
+
+        return 0;
+    }
+    
+    public class PlayerCountResponse
+    {
+        public int Players { get; set; }
+    }
+
     private async Task<string> CreateSnakeContainerAsync(int port)
     {
         var response = await _docker.Containers.CreateContainerAsync(new CreateContainerParameters
