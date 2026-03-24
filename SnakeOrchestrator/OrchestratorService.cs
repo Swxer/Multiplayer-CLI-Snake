@@ -71,6 +71,54 @@ public class OrchestratorService
             .FirstOrDefault();
     }
 
+    public async Task CleanupEmptyServers()
+    {
+        foreach (var server in _servers.ToList())
+        {
+            await ProcessServerCleanup(server);
+        }
+    }
+
+    private async Task ProcessServerCleanup(ServerInstance server)
+    {
+        if (server.PlayerCount > 0)
+        {
+            ResetServerTimer(server);
+            return; 
+        }
+        
+        if (server.EmptySince == null)
+        {
+            StartEmptyTimer(server);
+            return;
+        }
+        
+        var timeEmpty = DateTime.UtcNow - server.EmptySince.Value;
+        if (timeEmpty.TotalSeconds > EmptyTimeOutSeconds)
+        {
+            await ShutdownExpiredServer(server);
+        }
+    }
+    
+    private static void ResetServerTimer(ServerInstance server)
+    {
+        if (server.EmptySince == null) return;
+        Console.WriteLine($"[INFO] Port {server.Port} has players, timer cancelled");
+        server.EmptySince = null;
+    }
+
+    private static void StartEmptyTimer(ServerInstance server)
+    {
+        server.EmptySince = DateTime.UtcNow;
+        Console.WriteLine($"[INFO] Port {server.Port} is empty, starting {EmptyTimeOutSeconds}s timer");
+    }
+
+    private async Task ShutdownExpiredServer(ServerInstance server)
+    {
+        Console.WriteLine($"[INFO] Port {server.Port} expired, stopping...");
+        await StopServerAsync(server.ContainerId);
+    }
+
     public async Task<int> GetPlayerCountAsync(int port)
     {
         try
