@@ -61,6 +61,16 @@ public class OrchestratorService
         }
     }
 
+    public ServerInstance? FindLeastLoadedServer()
+    {
+        if (_servers.Count == 0)
+            return null;
+        return _servers
+            .OrderBy(s => s.PlayerCount)
+            .ThenBy(s => s.Port)
+            .FirstOrDefault();
+    }
+
     public async Task<int> GetPlayerCountAsync(int port)
     {
         try
