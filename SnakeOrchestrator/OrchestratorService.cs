@@ -40,7 +40,27 @@ public class OrchestratorService
         await _docker.Containers.StartContainerAsync(containerId, new ContainerStartParameters());
         return RegisterNewServer(port, containerId);
     }
-    
+
+    public async Task StopServerAsync(string containerId)
+    {
+        try
+        {
+            await _docker.Containers.StopContainerAsync(containerId, new ContainerStopParameters { WaitBeforeKillSeconds = 10 });
+            await _docker.Containers.RemoveContainerAsync(containerId, new ContainerRemoveParameters { Force = true });
+            var server = _servers.FirstOrDefault(s => s.ContainerId == containerId);
+            
+            if (server != null)
+            {
+                _servers.Remove(server);
+                Console.WriteLine($"Stopped SnakeServer container on port {server.Port}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error stopping container {containerId}: {ex.Message}");
+        }
+    }
+
     private async Task<string> CreateSnakeContainerAsync(int port)
     {
         var response = await _docker.Containers.CreateContainerAsync(new CreateContainerParameters
