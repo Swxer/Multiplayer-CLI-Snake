@@ -26,7 +26,18 @@ public class Program
             return Results.Ok($"http://localhost:{server.Port}");
         });
         
-    }
+        app.MapGet("/api/status", () =>
+        {
+            var servers = orchestrator.GetAllServers()
+                .Select(s => new { s.Port, s.PlayerCount, s.EmptySince });
+            return Results.Ok(servers);
+        });
+        
+        _ = pollingService.StartAsync();
 
+        Console.WriteLine("[ORCHESTRATOR] Running on http://localhost:5000");
+        app.Run("http://localhost:5000");
+        
+    }
 }
 
