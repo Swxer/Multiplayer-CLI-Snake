@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeServer", "SnakeServer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeShared", "SnakeShared\SnakeShared.csproj", "{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHGateway", "SSHGateway\SSHGateway.csproj", "{AFC68060-659F-4183-9224-AE26218B7F12}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeOrchestrator", "SnakeOrchestrator\SnakeOrchestrator.csproj", "{65548263-D4EE-4C23-8C4F-7FF0894D7412}"
 EndProject
 Global
@@ -28,10 +26,6 @@ Global
 		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B7FD7B2-99E4-484A-89A1-78609B52D3D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFC68060-659F-4183-9224-AE26218B7F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFC68060-659F-4183-9224-AE26218B7F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFC68060-659F-4183-9224-AE26218B7F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFC68060-659F-4183-9224-AE26218B7F12}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65548263-D4EE-4C23-8C4F-7FF0894D7412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65548263-D4EE-4C23-8C4F-7FF0894D7412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65548263-D4EE-4C23-8C4F-7FF0894D7412}.Release|Any CPU.ActiveCfg = Release|Any CPU
