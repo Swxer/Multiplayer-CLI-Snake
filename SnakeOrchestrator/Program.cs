@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using SnakeOrchestrator;
+﻿using SnakeOrchestrator;
 
 public class Program
 {
@@ -17,12 +15,22 @@ public class Program
         var orchestrator = app.Services.GetRequiredService<OrchestratorService>();
         var pollingService = app.Services.GetRequiredService<PollingService>();
         
-        app.MapGet("/api/server", () =>
+        app.MapGet("/api/server", async () =>
         {
             var server = orchestrator.FindLeastLoadedServer();
+    
             if (server == null)
                 return Results.NotFound("No servers available");
-        
+            
+            var liveCount = await orchestrator.GetPlayerCountAsync(server.Port);
+    
+            if (liveCount >= 3)
+            {
+                var newServer = await orchestrator.StartServerAsync();
+                await Task.Delay(1000);
+                return Results.Ok($"http://localhost:{newServer.Port}");
+            }
+            
             return Results.Ok($"http://localhost:{server.Port}");
         });
         
