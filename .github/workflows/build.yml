@@ -28,9 +28,15 @@ jobs:
     - name: Build SnakeOrchestrator
       run: dotnet publish SnakeOrchestrator -c Release -r linux-x64 --self-contained -o ./publish/orchestrator
     
+    - name: Zip SnakeClient
+      run: zip -r snake-client.zip ./publish/client
+    
+    - name: Zip SnakeOrchestrator
+      run: zip -r snake-orchestrator.zip ./publish/orchestrator
+    
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: ./publish/**/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        files: |
+          snake-client.zip
+          snake-orchestrator.zip
