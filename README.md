@@ -45,8 +45,8 @@ Press Enter, enter your name, and start playing with friends!
        │   │  ┌─────────────────────────────────────────┐    │    │
        │   │  │  GET /api/server  → returns least       │    │    │
        │   │  │                  loaded server URL      │    │    │
-       │   │  │  GET /api/playercount → returns player  |    |    |
-       |   |  |                            count        │    │    │
+       │   │  │  GET /api/playercount → returns player  │    │    │
+       │   │  │                            count        │    │    │
        │   │  └─────────────────────────────────────────┘    │    │
        │   │                      │                          │    │
        │   │    ┌─────────────────┼─────────────────┐        │    │
