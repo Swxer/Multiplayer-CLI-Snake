@@ -2,7 +2,6 @@
 
 public class Program
 {
-
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -17,21 +16,32 @@ public class Program
         
         app.MapGet("/api/server", async () =>
         {
-            var server = orchestrator.FindLeastLoadedServer();
-    
-            if (server == null)
-                return Results.NotFound("No servers available");
-            
-            var liveCount = await orchestrator.GetPlayerCountAsync(server.Port);
-    
-            if (liveCount >= 3)
+            try
             {
-                var newServer = await orchestrator.StartServerAsync();
-                await Task.Delay(1000);
-                return Results.Ok($"http://localhost:{newServer.Port}");
+                var server = orchestrator.FindLeastLoadedServer();
+                
+                if (server == null)
+                {
+                    server = await orchestrator.StartServerAsync();
+                    await Task.Delay(1000);
+                }
+                
+                var liveCount = await orchestrator.GetPlayerCountAsync(server.Port);
+                
+                if (liveCount >= 3)
+                {
+                    var newServer = await orchestrator.StartServerAsync();
+                    await Task.Delay(1000);
+                    return Results.Ok($"http://localhost:{newServer.Port}");
+                }
+                
+                return Results.Ok($"http://localhost:{server.Port}");
             }
-            
-            return Results.Ok($"http://localhost:{server.Port}");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] {ex.Message}");
+                return Results.StatusCode(503);
+            }
         });
         
         app.MapGet("/api/status", () =>
@@ -45,7 +55,5 @@ public class Program
 
         Console.WriteLine("[ORCHESTRATOR] Running on http://0.0.0.0:5000");
         app.Run("http://0.0.0.0:5000");
-        
     }
 }
-
