@@ -3,6 +3,7 @@
 A real-time, networked game engine built with **C#** and **.NET 10**. This project focuses on high-precision terminal rendering, asynchronous engine architecture, and upcoming scalable multiplayer synchronization using **SignalR**.
 
 ![Enter username](https://github.com/Swxer/Multiplayer-CLI-Snake/blob/main/assets/images/Menu.png?raw=true)
+
 ![Gameplay](https://github.com/Swxer/Multiplayer-CLI-Snake/blob/main/assets/images/Gameplay.png?raw=true)
 
 
